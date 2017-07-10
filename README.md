@@ -1,13 +1,15 @@
 inoERP
 =========================
 
-Demo: <http://demo.inoideas.org/extensions/user/user_login.php>
-
 Homepage: <http://inoideas.org/>
 
-Video Documentation: <http://youtube.com/embed/AS8idx2Cg_U?list=PLI9s_lIFpC099xADLymQcDCmrDhnkxcjM>
+Demo: <http://inoideas.org/content/demo>
+
+Documentation: <http://inoideas.org/content.php?content_type=documentation&category_id=30>
 
 Facebook: <https://www.facebook.com/inoerp>
+
+Support The Project: <https://salt.bountysource.com/teams/ino-erp>
 
 Introduction
 ------------
@@ -41,28 +43,53 @@ Requirements & Installation
 
 == Requirements ==
 
-1. HTTP web server Ex. Apache, IIS. 
-2. PHP 5.5+    
-3. MySQL Server version: 5.6.17+
-    
+1. HTTP web server Ex. Nginx, Apache, IIS, Oracle HTTP
+2. PHP 5.5+ for versions upto 0.4.1 , PHP 7+ for versions => 0.5.1  and PHP 7.1+ for versions => 0.6.1   
+3. Oracle 12c or MySQL(Server version: 5.6.17+) or MariaDB
+
+== Installation for Master Branch & Future Version ==
+
+1. Download and unzip inoerp into your server. The first folder contains 2 different folders: inoerp_server and www. Copy the contents of www folder to your web folder (www or htdocs). Put the inoerp_server a directory above the web folder. 
+2. Change the DB settings @ include\basics\settings\dbsettings.inc , and Change the session_set_cookie_params  in sessions file
+3. Open the index.php /or install.php page and follow the simple four steps installation process (mySQL user must have all the privileges equivalent to root a user to create views. You can change to a lesser privileged user after installation by changing the username & password @ include\basics\dbsettings.inc)
+4. Login into the application using user id /password - inoerp/inoerp
+
+== Installation For Older Versions ==
+  
 == Auto Installation ==
 
-1. Upload all the files into the web server
-2. Open the index.php /or install.php page and follow the simple 4 steps installation process (mySQL user should have all the privileges equivalent to root a user  to create views. You can change to a lesser privileged user after installation by changing the username & password @ include\basics\dbsettings.inc)
-3. Login in to the application using user id /password - admin/admin
+1. Upload all the files on the web server
+2. If using Apache then enable mod_rewrite module before you proceed further
+3. Open the index.php /or install.php page and follow the simple four steps installation process (mySQL user must have all the privileges equivalent to root a user to create views. You can change to a lesser privileged user after installation by changing the username & password @ include\basics\dbsettings.inc)
+4. Login into the application using user id /password - inoerp/inoerp
 
 == Manual Installation ==
 
-1. Change the DB settings @ include\basics\dbsettings.inc
+1. Change the DB settings @ include\basics\settings\dbsettings.inc
 2. Change the session_set_cookie_params  in sessions file
 3. Import the database file @  enine\install\inoerp.sql
 4. Change the .htaccess
-5. Login in to the application using user id /password - admin/admin
+5. Login in to the application using user id /password - inoerp/inoerp
+
+== Security Consideration ==
+
+It is always advisable to keep the settings files outside the public directory. If you decide to keep the settings folder in the root directory, then make below two changes
+
+1. Modify basics.inc @ includes\basic modify     
+require_once(INC_BASICS . DS .  'settings'. DS. "dbsettings.inc");  
+to  
+require_once(HOME_DIR . DS .  '/../settings'. DS. "dbsettings.inc");
+
+2. Modify inomail file @ includes\general_class  
+include_once __DIR__.'/../basics/settings/mailsettings.inc';  
+to  
+require_once(HOME_DIR . DS .  '/../settings'. DS. "mailsettings.inc");
 
 
-Optional setup
+== Optional setup ==
 
-If Auto-Schedule/run of any program is required then schdule the main program modules/sys/program/start_program.php via cron job.
+
+If Auto-Schedule/run of any program is required then schedule the main program modules/sys/program/start_program.php via a cron job.
  
 
 Modules
@@ -78,7 +105,7 @@ A multi segment chart of account structure to represent all the segments of a bu
       1020202 – a Natural account such as Asset, Liability, Expense, Income or Owners Equity
 
 2.	Calendars 
-Define as many different finical calendars as required
+Define as many different financial calendars as required
 Ex : One calendar INO_CORP for Corporate and INO_USA, INO_UK for specific countries
 3.	Account Combinations
 4.	Currency & Conversions
